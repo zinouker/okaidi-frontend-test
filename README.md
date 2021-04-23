@@ -35,7 +35,8 @@ Feel free to read the API doc here => https://opentdb.com/
 
 - You can't use any library or framework, everything has to be written in vanilla JavaScript.
 - Leave comments where you think there should be.
-- The design of the game is up to you, but don't worry, we are not asking you to be a CSS and design wizard along with being a fullstack developer, but those appetences will be appreciated.
+- The design of the game is up to you, we ask you to make it responsive and use CSS3.
+- However, CSS frameworks are to be avoided.
 
 ---
 
