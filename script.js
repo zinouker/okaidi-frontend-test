@@ -1,6 +1,9 @@
 const category_select = document.getElementById("category");
 const difficulty_select = document.getElementById("difficulty");
 
+const info_box = document.querySelector(".info_box");
+const quiz_box = document.querySelector(".quiz_box");
+
 let questions = [];
 let selectedCategory = 'any';
 let selectedDifficulty = 'any';
@@ -16,6 +19,10 @@ function difficultyChanged() {
 async function startQuiz() {
     console.log('start quiz', selectedCategory, selectedDifficulty);
     await getQuestionsFromTriviaDb();
+    // hide info box and show quiz box after getting questions
+    info_box.classList.remove("activeInfo");
+    quiz_box.classList.add("activeQuiz");
+
 }
 
 async function getQuestionsFromTriviaDb() {
