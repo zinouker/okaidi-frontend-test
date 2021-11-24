@@ -266,6 +266,8 @@ footer button.show {
     transform: scale(1);
 }
 
+/* Results box */
+
 .result_box {
     background: #fff;
     border-radius: 5px;
@@ -312,4 +314,29 @@ footer button.show {
     outline: none;
     border-radius: 5px;
     border: 1px solid #007bff;
+}
+
+/* Responsive */
+@media only screen and (max-width: 580px) {
+    .info_box,
+    .quiz_box,
+    .result_box {
+        width: 400px !important;
+    }
+}
+
+@media only screen and (max-width: 440px) {
+    .info_box,
+    .quiz_box,
+    .result_box {
+        width: 320px !important;
+    }
+}
+
+@media only screen and (max-width: 440px) {
+    .info_box,
+    .quiz_box,
+    .result_box {
+        width: 280px !important;
+    }
 }

@@ -186,6 +186,8 @@ function showResult() {
     quiz_box.classList.remove("activeQuiz");
     result_box.classList.add("activeResult");
     const scoreText = result_box.querySelector(".score_text");
+    const progress = result_box.querySelector(".progress");
     let scoreTag = `<span>You got <p> ${userScore} </p> out of <p> ${questions.length}</p> ,your score is <p> ${userScore * 20} / 100 </p></span>`;
     scoreText.innerHTML = scoreTag;
+    progress.value = userScore;
 }
