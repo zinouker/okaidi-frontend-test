@@ -6,10 +6,14 @@ const quiz_box = document.querySelector(".quiz_box");
 const question_title = document.querySelector(".quiz_box header .title");
 const question_text = document.querySelector(".que_text");
 const option_list = document.querySelector(".option_list");
+const next_btn = document.querySelector("footer .next_btn");
+const bottom_ques_counter = document.querySelector("footer .total_que");
 
 let questions = [];
 let selectedCategory = 'any';
 let selectedDifficulty = 'any';
+let questionCount = 0;
+let questionNumber = 1;
 
 function categoryChanged() {
     selectedCategory = category_select.value;
@@ -51,6 +55,7 @@ async function startQuiz() {
     info_box.classList.remove("activeInfo");
     quiz_box.classList.add("activeQuiz");
     showQuetions(0);
+    questionCounter(1);
 }
 
 function showQuetions(index) {
@@ -66,5 +71,24 @@ function showQuetions(index) {
     question_title.innerHTML = `<p>Question ${currentQuestion.numb}</p>`;
     question_text.innerHTML = question_tag; 
     option_list.innerHTML = option_tag;
+}
 
+function nextQuestion() {
+    //if question count is less than total question length
+    if (questionCount < questions.length - 1) { 
+        // show next question 
+        questionCount++; 
+        questionNumber++; 
+        showQuetions(questionCount); 
+        questionCounter(questionNumber);
+    } else {
+        // show results
+        console.log('show result');
+    }
+}
+
+function questionCounter(index) {
+    // increment the counter of questions
+    let totalQueCounTag = `<span><p> ${index} </p> of <p> ${questions.length} </p> Questions</span>`;
+    bottom_ques_counter.innerHTML = totalQueCounTag;
 }
