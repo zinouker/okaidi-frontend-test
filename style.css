@@ -142,7 +142,7 @@ label {
     font-size: 18px;
     font-weight: 500;
     height: 30px;
-    width: 45px;
+    width: auto;
     color: #fff;
     border-radius: 5px;
     line-height: 30px;
@@ -150,6 +150,7 @@ label {
     background: #343a40;
     border: 1px solid #343a40;
     user-select: none;
+    padding: 0px 6px;
 }
 
 section {

@@ -151,6 +151,7 @@ function nextQuestion() {
 }
 
 function startTimer(time) {
+    timeCount.style.backgroundColor = "#343a40";
     counter = setInterval(timer, 1000);
     function timer() {
         timeCount.textContent = time;
@@ -162,6 +163,8 @@ function startTimer(time) {
         }
         //timeoff and user didnt answer
         if (time < 0) {
+            timeCount.style.backgroundColor = "red";
+            timeCount.textContent = 'Time Off';
             clearInterval(counter);
             const allOptions = option_list.children.length;
             let correctAnswer = questions[questionCount].answer;
