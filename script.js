@@ -35,32 +35,42 @@ async function getQuestionsFromTriviaDb() {
         const response = await fetch(url);
         const data = await response.json();
         console.log('data', data);
-        data.results.forEach((element, index) => {
-            let options = element.incorrect_answers;
-            options.push(element.correct_answer);
-            const question = {
-                numb: index + 1,
-                question: element.question,
-                answer: element.correct_answer,
-                options: options.slice().sort(() => Math.random() - 0.5)
-            }
-            questions.push(question);
-        });
-        console.log('questions', questions);
+        if (response.ok && data.results && data.results.length > 0) {
+            data.results.forEach((element, index) => {
+                let options = element.incorrect_answers;
+                options.push(element.correct_answer);
+                const question = {
+                    numb: index + 1,
+                    question: element.question,
+                    answer: element.correct_answer,
+                    options: options.slice().sort(() => Math.random() - 0.5)
+                }
+                questions.push(question);
+            });
+            console.log('questions', questions);
+            return true;
+        } else {
+            alert("An error has occurred while preparing your quiz, please try again");
+            return false;
+        }
     } catch (error) {
         console.log('error', error);
+        alert("Oops! something went wrong, please check your internet and retry!");
+        return false;
     }
 }
 
 async function startQuiz() {
     console.log('start quiz', selectedCategory, selectedDifficulty);
-    await getQuestionsFromTriviaDb();
+    const isQuizReady = await getQuestionsFromTriviaDb();
     // hide info box and show quiz box after getting questions
-    info_box.classList.remove("activeInfo");
-    quiz_box.classList.add("activeQuiz");
-    showQuestions(0);
-    questionCounter(1);
-    startTimer(timeValue);
+    if (isQuizReady) {
+        info_box.classList.remove("activeInfo");
+        quiz_box.classList.add("activeQuiz");
+        showQuestions(0);
+        questionCounter(1);
+        startTimer(timeValue);
+    }
 }
 
 function exitQuiz() {
