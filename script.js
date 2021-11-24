@@ -1,6 +1,5 @@
 const category_select = document.getElementById("category");
 const difficulty_select = document.getElementById("difficulty");
-
 const info_box = document.querySelector(".info_box");
 const quiz_box = document.querySelector(".quiz_box");
 const result_box = document.querySelector(".result_box");
@@ -9,12 +8,15 @@ const question_text = document.querySelector(".que_text");
 const option_list = document.querySelector(".option_list");
 const next_btn = document.querySelector("footer .next_btn");
 const bottom_ques_counter = document.querySelector("footer .total_que");
+const timeCount = document.querySelector(".timer .timer_sec");
 
 let questions = [];
 let selectedCategory = 'any';
 let selectedDifficulty = 'any';
+let timeValue = 15;
 let questionCount = 0;
 let questionNumber = 1;
+let counter;
 let userScore = 0;
 
 function categoryChanged() {
@@ -56,15 +58,16 @@ async function startQuiz() {
     // hide info box and show quiz box after getting questions
     info_box.classList.remove("activeInfo");
     quiz_box.classList.add("activeQuiz");
-    showQuetions(0);
+    showQuestions(0);
     questionCounter(1);
+    startTimer(timeValue);
 }
 
 function exitQuiz() {
     window.location.reload();
 }
 
-function showQuetions(index) {
+function showQuestions(index) {
     let option_tag = '';
 
     const currentQuestion = questions[index];
@@ -87,6 +90,7 @@ function showQuetions(index) {
 }
 
 function optionSelected(answer) {
+    clearInterval(counter);
     let userAnswer = answer.textContent;
     let correctAnswer = questions[questionCount].answer;
     const allOptions = option_list.children.length;
@@ -99,7 +103,7 @@ function optionSelected(answer) {
         console.log("Wrong Answer");
         answer.classList.add("incorrect");
 
-        // check for the correct answer and add green color ti it
+        // check for the correct answer and add green color to it
         for (i = 0; i < allOptions; i++) {
             if (option_list.children[i].textContent == correctAnswer) {
                 console.log("Auto selected correct answer.");
@@ -122,12 +126,51 @@ function nextQuestion() {
         // show next question 
         questionCount++;
         questionNumber++;
-        showQuetions(questionCount);
+        showQuestions(questionCount);
         questionCounter(questionNumber);
+        // restart the counter and hide next button for next question
+        clearInterval(counter);
+        startTimer(timeValue);
+        next_btn.classList.remove("show");
     } else {
         // show results
         console.log('show result');
+        clearInterval(counter);
         showResult();
+    }
+}
+
+function startTimer(time) {
+    counter = setInterval(timer, 1000);
+    function timer() {
+        timeCount.textContent = time;
+        time--;
+        //if timer is less than 9 we add 0 just for good display
+        if (time < 9) {
+            let addZero = timeCount.textContent;
+            timeCount.textContent = `0${addZero}`;
+        }
+        //timeoff and user didnt answer
+        if (time < 0) {
+            clearInterval(counter);
+            const allOptions = option_list.children.length;
+            let correctAnswer = questions[questionCount].answer;
+
+            // check for the correct answer and add green color ti it
+            for (i = 0; i < allOptions; i++) {
+                if (option_list.children[i].textContent == correctAnswer) {
+                    console.log("Time Off: Auto selected correct answer.");
+                    option_list.children[i].setAttribute("class", "option correct");
+                }
+            }
+
+            //once user select an option then disabled all options
+            for (i = 0; i < allOptions; i++) {
+                option_list.children[i].classList.add("disabled");
+            }
+            //show the next button for next question
+            next_btn.classList.add("show");
+        }
     }
 }
 
@@ -139,9 +182,9 @@ function questionCounter(index) {
 
 function showResult() {
     //show result box and hide all the others
-    info_box.classList.remove("activeInfo"); 
-    quiz_box.classList.remove("activeQuiz"); 
-    result_box.classList.add("activeResult"); 
+    info_box.classList.remove("activeInfo");
+    quiz_box.classList.remove("activeQuiz");
+    result_box.classList.add("activeResult");
     const scoreText = result_box.querySelector(".score_text");
     let scoreTag = `<span>You got <p> ${userScore} </p> out of <p> ${questions.length}</p> ,your score is <p> ${userScore * 20} / 100 </p></span>`;
     scoreText.innerHTML = scoreTag;
