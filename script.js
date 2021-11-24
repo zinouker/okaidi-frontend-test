@@ -3,6 +3,7 @@ const difficulty_select = document.getElementById("difficulty");
 
 const info_box = document.querySelector(".info_box");
 const quiz_box = document.querySelector(".quiz_box");
+const result_box = document.querySelector(".result_box");
 const question_title = document.querySelector(".quiz_box header .title");
 const question_text = document.querySelector(".que_text");
 const option_list = document.querySelector(".option_list");
@@ -57,6 +58,10 @@ async function startQuiz() {
     quiz_box.classList.add("activeQuiz");
     showQuetions(0);
     questionCounter(1);
+}
+
+function exitQuiz() {
+    window.location.reload();
 }
 
 function showQuetions(index) {
@@ -122,6 +127,7 @@ function nextQuestion() {
     } else {
         // show results
         console.log('show result');
+        showResult();
     }
 }
 
@@ -129,4 +135,14 @@ function questionCounter(index) {
     // increment the counter of questions
     let totalQueCounTag = `<span><p> ${index} </p> of <p> ${questions.length} </p> Questions</span>`;
     bottom_ques_counter.innerHTML = totalQueCounTag;
+}
+
+function showResult() {
+    //show result box and hide all the others
+    info_box.classList.remove("activeInfo"); 
+    quiz_box.classList.remove("activeQuiz"); 
+    result_box.classList.add("activeResult"); 
+    const scoreText = result_box.querySelector(".score_text");
+    let scoreTag = `<span>You got <p> ${userScore} </p> out of <p> ${questions.length}</p> ,your score is <p> ${userScore * 20} / 100 </p></span>`;
+    scoreText.innerHTML = scoreTag;
 }
